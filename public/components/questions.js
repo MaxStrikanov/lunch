@@ -41,10 +41,11 @@ export const qviz = () => {
     function displayQuestion() {
         const questionElem = document.getElementById('question');
         const optionsElem = document.getElementById('options');
-        const
-            current = questions[currentQuestion];
+        const current = questions[currentQuestion];
+
         questionElem.innerText = current.question;
         optionsElem.innerHTML = '';
+        
         current.options.forEach(option => {
             const button = document.createElement('button');
             button.innerText = option;
