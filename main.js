@@ -1,4 +1,5 @@
-import './style.scss'
-import {  qviz} from './public/components/questions'
+
+import { qviz } from './public/components/questions';
+import './style.scss';
 
 qviz()

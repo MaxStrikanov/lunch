@@ -1,79 +1,136 @@
 export const qviz = () => {
+    document.addEventListener('DOMContentLoaded', () => {
+        const slides = document.querySelectorAll('.slide');
+        const yesButton = document.getElementById('yes-button');
+        const noButton = document.getElementById('no-button');
+        const cuisineButtons = document.querySelectorAll('.cuisine-button');
+        const restaurantButtons = document.querySelectorAll('.restaurant-button');
+        const sendResultsButton = document.getElementById('send-results');
 
+        let userData = {
+            lunchDecision: '',
+            id: '',
+            restaurant: '',
+            date: ''
+        };
 
-    const questions = [{
-        
-        question: "Пообедаем?",
-            options: ["Да", "Нет"]
-        },
-        {
-         question: "Какую кухню вы предпочитаете?",
-            options: ["Грузинская", "Итальянская", "Японская", "Французская", "Пирожковопривокзальная"]
-        },
-        {
-            question: "Какую еду вы предпочитаете для пикника?",
-            options: ["Сэндвичи", "Фрукты", "Гриль", "Салаты", "Выпечка", "Сырная тарелка"]
-        },
-        {
-            question: "Какой ваш любимый вид пасты?",
-            options: ["Спагетти", "Лазанья", "Феттучини", "Пене", "Равиоли", "Тортеллини"]
-        },
-        {
-            question: "Какой ваш любимый способ приготовления мяса?",
-            options: ["Жарка на гриле", "Запекание в духовке", "Варка", "Тушение", "Копчение", "Жарка на сковороде"]
-        },
-        // добавьте остальные вопросы по аналогии
-    ];
+        const showSlide = (id) => {
+            slides.forEach(slide => slide.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+        };
 
-    let currentQuestion = 0;
-    let answers = [];
+        const nextSlide = (answer) => {
+            userData.lunchDecision = answer;
+            if (answer === 'yes') {
+                showSlide('slide2');
+            } else {
+                alert('Спасибо! До свидания.');
+            }
+        };
 
-    function nextQuestion(answer) {
-        answers.push(answer);
-        currentQuestion++;
-        if (currentQuestion < questions.length) {
-            displayQuestion();
-        } else {
-            sendResults();
+        const nextCuisine = (cuisine) => {
+            userData.cuisine = cuisine;
+            showSlide(`slide-${cuisine}`);
+        };
+
+        const nextRestaurant = (restaurant) => {
+            userData.restaurant = restaurant;
+            generateDateOptions();
+            showSlide('slide-date');
+        };
+
+        const generateDateOptions = () => {
+            const dateOptions = document.getElementById('date-options');
+            dateOptions.innerHTML = '';
+            for (let i = 0; i < 7; i++) {
+                const date = new Date();
+                date.setDate(date.getDate() + i);
+                const dateString = formatDate(date);
+                const button = document.createElement('button');
+                button.innerText = dateString;
+                button.onclick = () => {
+                    userData.date = dateString;
+                    showResults();
+                };
+                dateOptions.appendChild(button);
+            }
+        };
+
+        const formatDate = (date) => {
+            const day = date.getDate().toString().padStart(2, '0');
+            const monthNames = [
+                "января", "февраля", "марта", "апреля", "мая", "июня",
+                "июля", "августа", "сентября", "октября", "ноября", "декабря"
+            ];
+            const month = monthNames[date.getMonth()];
+            const year = date.getFullYear();
+            return `${day} ${month} ${year}`;
+        };
+
+        const trim = (str) => {
+            let index = str.indexOf(',');
+            if (index !== -1) {
+                return str.substring(index + 1).trim();
+            }
+            return str;
         }
-    }
 
-    function displayQuestion() {
-        const questionElem = document.getElementById('question');
-        const optionsElem = document.getElementById('options');
-        const current = questions[currentQuestion];
+        const showResults = () => {
+            const resultsDiv = document.getElementById('results');
+            let cutAdress = userData.restaurant.split(',')[0];
+            let cutName = trim(userData.restaurant);
+            resultsDiv.innerHTML = `
+            <p>Заведение: ${cutAdress}</p>
+            <p>Адрес: ${cutName}</p>
+            <p>Дата: ${userData.date}</p>
+        `;
+            showSlide('slide-results');
+        };
 
-        questionElem.innerText = current.question;
-        optionsElem.innerHTML = '';
-        
-        current.options.forEach(option => {
-            const button = document.createElement('button');
-            button.innerText = option;
-            button.onclick = () => nextQuestion(option);
-            const li = document.createElement('li');
-            li.appendChild(button);
-            optionsElem.appendChild(li);
-        });
-    }
+        const submitData = () => {
+            const token = 'YOUR_TELEGRAM_BOT_TOKEN';
+            const chatId = 'YOUR_TELEGRAM_CHAT_ID';
+            const message = `
+            Решение: ${userData.lunchDecision}
+            Кухня: ${userData.cuisine}
+            Заведение: ${userData.restaurant}
+            Дата: ${userData.date}
+        `;
 
-    function sendResults() {
-        const botToken = '6037128965:AAFLmI1biwh--7nNrJXOAIfdpApFkJM6Qig';
-        const chatId = '587053071';
-        const message = `Результаты квиза:\n${answers.join('\n')}`;
-        const url =
-            `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(message)}`;
-
-        fetch(url)
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById('quiz').innerHTML = '<p>Спасибо за участие! Ваши ответы были отправлены.</p>';
-            })
-            .catch(error => {
-                console.error('Ошибка:', error);
-                document.getElementById('quiz').innerHTML = '<p>Произошла ошибка при отправке ответов.</p>';
+            fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    chat_id: chatId,
+                    text: message
+                })
+            }).then(response => {
+                if (response.ok) {
+                    alert('Результаты успешно отправлены!');
+                } else {
+                    alert('Ошибка при отправке результатов.');
+                }
+            }).catch(error => {
+                console.error('Error:', error);
+                alert('Ошибка при отправке результатов.');
             });
-    }
+        };
 
-    displayQuestion();
+        yesButton.onclick = () => nextSlide('yes');
+        noButton.onclick = () => nextSlide('no');
 
-}
+        cuisineButtons.forEach(button => {
+            button.onclick = () => nextCuisine(button.getAttribute('data-cuisine'));
+        });
+
+        restaurantButtons.forEach(button => {
+            button.onclick = () => nextRestaurant(button.getAttribute('data-restaurant'));
+        });
+
+
+
+        showSlide('slide1');
+    });
+} 
