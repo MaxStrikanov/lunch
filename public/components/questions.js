@@ -51,6 +51,7 @@ export const qviz = () => {
                 button.onclick = () => {
                     userData.date = dateString;
                     showResults();
+                    submitData();
                 };
                 dateOptions.appendChild(button);
             }
@@ -80,16 +81,16 @@ export const qviz = () => {
             let cutAdress = userData.restaurant.split(',')[0];
             let cutName = trim(userData.restaurant);
             resultsDiv.innerHTML = `
-            <p>Заведение: ${cutAdress}</p>
-            <p>Адрес: ${cutName}</p>
-            <p>Дата: ${userData.date}</p>
+            <p>Ждем Вас в ${cutAdress}</p>
+            <p>по адресу ${cutName}</p>
+            <p> ${userData.date} в 13:30</p>
         `;
             showSlide('slide-results');
         };
 
         const submitData = () => {
-            const token = 'YOUR_TELEGRAM_BOT_TOKEN';
-            const chatId = 'YOUR_TELEGRAM_CHAT_ID';
+            const token = '6037128965:AAFLmI1biwh--7nNrJXOAIfdpApFkJM6Qig';
+            const chatId = '587053071';
             const message = `
             Решение: ${userData.lunchDecision}
             Кухня: ${userData.cuisine}
@@ -129,8 +130,7 @@ export const qviz = () => {
             button.onclick = () => nextRestaurant(button.getAttribute('data-restaurant'));
         });
 
-
-
         showSlide('slide1');
     });
 } 
+

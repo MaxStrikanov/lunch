@@ -116,43 +116,21 @@ body {
     background-color: #333;
   }
   
-    & .light {
-      background: $color;
+    &.light {
+      background: $light;
       color: $btn;
     }
 
   @media (max-width: 576px) {
     padding: 16px 20px 16px 20px;
   }
+
+
 }
 
 
-.question {
 
-  &__wrapper {
-    backdrop-filter: blur(5px);
-    padding: 20px;
-    max-width: 430px;
-    text-align: center;
-    box-sizing: border-box;
-    border: 2px solid rgba(255, 255, 255, 0.31);
-    border-radius: 26px;
-    box-shadow: -5px 8px 20px 0px rgba(28, 12, 3, 0.27),
-    -18px 31px 36px 0px rgba(28, 12, 3, 0.24),
-    -41px 69px 48px 0px rgba(28, 12, 3, 0.14),
-    -73px 123px 57px 0px rgba(28, 12, 3, 0.04),
-    -114px 192px 63px 0px rgba(28, 12, 3, 0.01);
-    flex-grow: 1;
-    z-index: 10;
-
-    @media (max-width: 576px) {
-      max-width: calc(100% - 30px);
-    }
-  }
-
-  &__items {}
-
-  &__title {
+ h2 {
     margin-bottom: 20px;
     color: $light;
     font-family: Playfair Display;
@@ -163,58 +141,13 @@ body {
     text-align: center;
   }
 
-  &__btns {
 
-    list-style: none;
-    padding: 0;
-
-    & li {
-      margin-bottom: 10px;
-      border-radius: 26px;
-
-       &:nth-child(2) {
-
-        & button {
-          background: $light;
-         color: $bg;
-        }
-         
-       }
-    }
-
-    & button {
-      border: 2px solid rgba(255, 255, 255, 0.31);
-      border-radius: 26px;
-      box-shadow: 0px 3px 7px 0px rgba(32, 12, 4, 0.14),
-      0px 12px 12px 0px rgba(32, 12, 4, 0.12),
-      0px 28px 17px 0px rgba(32, 12, 4, 0.07);
-      background: $btn;
-      cursor: pointer;
-      color: $light;
-      font-family: Montserrat;
-      font-size: 15px;
-      font-weight: 500;
-      line-height: 18px;
-      letter-spacing: 0%;
-      display: flex;
-      flex-direction: row;
-      justify-content: center;
-      align-items: center;
-      padding: 16px 72px 16px 72px;
-      width: 100%;
-     
-
-      
-    }
-  }
-}
 
 .slide {
   display: none;
   backdrop-filter: blur(5px);
   padding: 20px;
-  margin: 0 30px;
-  max-width: 430px;
+  max-width: 100%;
   text-align: center;
   box-sizing: border-box;
   border: 2px solid rgba(255, 255, 255, 0.31);
@@ -230,4 +163,6 @@ body {
 
 div#quiz-container {
   z-index: 10;
+  margin-inline: auto;
+  width: min(100% - 30px, 840px);
 }
