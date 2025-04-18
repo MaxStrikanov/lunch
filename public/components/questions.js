@@ -21,7 +21,7 @@ export const qviz = () => {
 
         const nextSlide = (answer) => {
             userData.lunchDecision = answer;
-            if (answer === 'yes') {
+            if (answer === 'ДА') {
                 showSlide('slide2');
             } else {
                 alert('Спасибо! До свидания.');
@@ -133,8 +133,8 @@ export const qviz = () => {
             });
         };
 
-        yesButton.onclick = () => nextSlide('yes');
-        noButton.onclick = () => nextSlide('no');
+       yesButton.onclick = () => nextSlide('Да');
+        noButton.onclick = () => nextSlide('Нет');
 
         cuisineButtons.forEach(button => {
             button.onclick = () => nextCuisine(button.getAttribute('data-cuisine'));
