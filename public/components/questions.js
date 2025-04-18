@@ -29,9 +29,23 @@ export const qviz = () => {
         };
 
         const nextCuisine = (cuisine) => {
-            userData.cuisine = cuisine;
-            showSlide(`slide-${cuisine}`);
+        userData.cuisine = cuisine;
+    
+        const cuisineSlideMap = {
+            "Грузинская": "georgian",
+            "Итальянская": "italian",
+            "Французская": "french",
+            "Европейская": "european",
+            "Паназиатская": "panasian"
         };
+    
+        const slideId = cuisineSlideMap[cuisine];
+        if (slideId) {
+            showSlide(`slide-${slideId}`);
+        } else {
+            alert('Ошибка: не удалось определить слайд для выбранной кухни.');
+        }
+    };
 
         const nextRestaurant = (restaurant) => {
             userData.restaurant = restaurant;
