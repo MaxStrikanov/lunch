@@ -76,6 +76,15 @@
     </div>
   </div>
   <script type="module" src="/main.js"></script>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+   <script>
+      const tg = window.Telegram.WebApp;
+      tg.expand(); // Разворачивает окно
+     const user = tg.initDataUnsafe.user;
+      console.log(user.first_name); // Имя
+      console.log(user.id); 
+      console.log(tg.initDataUnsafe.user);
+  </script>
 </body>
 
 </html>
