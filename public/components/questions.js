@@ -21,7 +21,7 @@ export const qviz = () => {
 
         const nextSlide = (answer) => {
             userData.lunchDecision = answer;
-            if (answer === 'ДА') {
+            if (answer === 'Да') {
                 showSlide('slide2');
             } else {
                 alert('Спасибо! До свидания.');
