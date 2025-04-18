@@ -109,9 +109,9 @@ export const qviz = () => {
                 })
             }).then(response => {
                 if (response.ok) {
-                    alert('Результаты успешно отправлены!');
+                    console.log('Результаты успешно отправлены!');
                 } else {
-                    alert('Ошибка при отправке результатов.');
+                    console.log('Ошибка при отправке результатов.');
                 }
             }).catch(error => {
                 console.error('Error:', error);
